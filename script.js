@@ -1,54 +1,53 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Get elements from the DOM
     const generateEmailButton = document.getElementById('generate-email');
     const refreshInboxButton = document.getElementById('refresh-inbox');
-    const emailAddressDisplay = document.getElementById('email-address');
+    const emailDisplay = document.getElementById('email-address');
     const messagesList = document.getElementById('messages-list');
-    
-    // Event listener to generate a new email
-    generateEmailButton.addEventListener('click', function() {
-        generateEmail();
-    });
 
-    // Event listener to refresh inbox for the current email
+    generateEmailButton.addEventListener('click', generateEmail);
     refreshInboxButton.addEventListener('click', function() {
-        const currentEmail = emailAddressDisplay.textContent;
-        if (currentEmail.includes('@')) {
+        const currentEmail = emailDisplay.textContent;
+        // Make sure "No email generated yet." isn't treated as an email
+        if (currentEmail !== 'No email generated yet.' && currentEmail !== '') {
             getInbox(currentEmail);
-        }
-    });
-
-    function generateEmail() {
-        fetch('http://localhost:3000/')
+            } else {
+            alert("Please generate an email address first.");
+            }
+            });
+            });
+            
+            function generateEmail() {
+            fetch('http://localhost:3000/')
             .then(response => response.json())
-            .then(email => {
-                emailAddressDisplay.textContent = email; // Display the email
-                getInbox(email); // Fetch the inbox for the new email
+            .then(data => {
+            const email = data; // Assuming the server returns just the email string
+            document.getElementById('email-address').textContent = email;
             })
-            .catch(error => console.error('Error:', error));
-    }
-
-    function getInbox(email) {
-        fetch(`http://localhost:3000/messagebox/${email}`)
+            .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to generate a new email. Please try again.');
+            });
+            }
+            
+            function getInbox(email) {
+            fetch(http://localhost:3000/messagebox/${email})
             .then(response => response.json())
-            .then(messages => {
-                messagesList.innerHTML = ''; // Clear previous messages
-                if (messages.length === 0) {
-                    messagesList.innerHTML = '<p>Your inbox is empty.</p>';
-                } else {
-                    messages.forEach(message => {
-                        const messageDiv = document.createElement('div');
-                        messageDiv.className = 'message';
-                        messageDiv.innerHTML = `
-                            <h3>${message.subject}</h3>
-                            <p>From: ${message.from}</p>
-                            <p>Date: ${new Date(message.date).toLocaleString()}</p>
-                            <p>${message.body}</p>
-                        `;
-                        messagesList.appendChild(messageDiv);
-                    });
-                }
+            .then(data => {
+            messagesList.innerHTML = ''; // Clear the current messages
+            if (Array.isArray(data) && data.length > 0) {
+            // Assuming each message is an object with subject, from, and body
+            data.forEach(message => {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message';
+            messageDiv.innerHTML = <strong>From:</strong> ${message.from}<br> <strong>Subject:</strong> ${message.subject}<br> <p>${message.body}</p>;
+            messagesList.appendChild(messageDiv);
+            });
+            } else {
+            messagesList.innerHTML = '<p>No new messages.</p>';
+            }
             })
-            .catch(error => console.error('Error:', error));
-        }
-    });
+            .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to refresh inbox. Please try again.');
+            });
+            }
