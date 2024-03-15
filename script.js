@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', function () {
     generateEmailButton.addEventListener('click', generateEmail);
     refreshInboxButton.addEventListener('click', function() {
         const currentEmail = emailDisplay.textContent;
-        // Validate that an email has been generated before attempting to refresh the inbox
         if (currentEmail && currentEmail !== 'No email generated yet.') {
             getInbox(currentEmail);
         } else {
@@ -17,16 +16,13 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function generateEmail() {
-    fetch('https://tempmailapi--vikashkhati.repl.co/')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
+    // Notice the endpoint now points to your own server
+    fetch('/generate-email')
+        .then(response => response.json())
         .then(data => {
             const email = data.email;
             document.getElementById('email-address').textContent = email;
+            // Optionally, you could automatically refresh the inbox here
         })
         .catch(error => {
             console.error('Error:', error);
@@ -35,13 +31,9 @@ function generateEmail() {
 }
 
 function getInbox(email) {
-    fetch(`https://tempmailapi--vikashkhati.repl.co/messagebox/${email}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
+    // Notice the endpoint now points to your own server
+    fetch(`/proxy-messagebox/${email}`)
+        .then(response => response.json())
         .then(data => {
             messagesList.innerHTML = ''; // Clear the current messages
             if (data.messages && data.messages.length > 0) {
