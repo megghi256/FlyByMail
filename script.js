@@ -4,22 +4,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const emailDisplay = document.getElementById('email-address');
     const messagesList = document.getElementById('messages-list');
 
-    generateEmailButton.addEventListener('click', function() {
-        fetch('https://tempmailapi--vikashkhati.repl.co/')
-            .then(response => response.json())
-            .then(data => {
-                const email = data.email; // Using the 'email' property from the response
-                emailDisplay.textContent = email;
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Failed to generate a new email. Please try again.');
-            });
-    });
-
+    generateEmailButton.addEventListener('click', generateEmail);
     refreshInboxButton.addEventListener('click', function() {
         const currentEmail = emailDisplay.textContent;
-        if (currentEmail.includes('@')) {
+        // Validate that an email has been generated before attempting to refresh the inbox
+        if (currentEmail && currentEmail !== 'No email generated yet.') {
             getInbox(currentEmail);
         } else {
             alert("Please generate an email address first.");
@@ -27,9 +16,32 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+function generateEmail() {
+    fetch('https://tempmailapi--vikashkhati.repl.co/')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            const email = data.email;
+            document.getElementById('email-address').textContent = email;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to generate a new email. Please try again.');
+        });
+}
+
 function getInbox(email) {
     fetch(`https://tempmailapi--vikashkhati.repl.co/messagebox/${email}`)
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
             messagesList.innerHTML = ''; // Clear the current messages
             if (data.messages && data.messages.length > 0) {
