@@ -11,7 +11,7 @@ function generateEmail() {
 
 // Function to get inbox messages
 function getInbox(email) {
-    fetch("https://tempmailapi--vikashkhati.repl.co/messagebox/${email}")
+    fetch(`https://tempmailapi--vikashkhati.repl.co/messagebox/${email}`)
         .then(response => response.json())
         .then(data => {
             console.log(data);
@@ -21,3 +21,7 @@ function getInbox(email) {
 }
 
 // Call these functions when appropriate (e.g., on button click)
+document.addEventListener('DOMContentLoaded', function () {
+    // This code will run after the document is fully loaded
+    document.getElementById('generate-email').addEventListener('click', generateEmail);
+});
