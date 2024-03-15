@@ -1,15 +1,28 @@
 body {
     font-family: Arial, sans-serif;
-}
-
-header {
-    /* Add styles for header */
-}
-
-main {
-    /* Add styles for main content */
-}
-
-footer {
-    /* Add styles for footer */
-}
+  }
+  
+  #emailContainer,
+  #inboxContainer {
+    margin-bottom: 20px;
+  }
+  
+  #emailDisplay {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+  }
+  
+  button {
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  
+  #inboxMessages div {
+    padding: 5px;
+    margin-top: 10px;
+    border-bottom: 1px solid #eee;
+  }
+  
