@@ -1,37 +1,54 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Attach event listeners after the DOM has loaded
-    document.getElementById('generate-email').addEventListener('click', function() {
+    // Get elements from the DOM
+    const generateEmailButton = document.getElementById('generate-email');
+    const refreshInboxButton = document.getElementById('refresh-inbox');
+    const emailAddressDisplay = document.getElementById('email-address');
+    const messagesList = document.getElementById('messages-list');
+    
+    // Event listener to generate a new email
+    generateEmailButton.addEventListener('click', function() {
         generateEmail();
     });
-});
 
-// Function to generate a random email address and update the DOM
-function generateEmail() {
-    fetch('http://localhost:3000/')
-        .then(response => response.json())
-        .then(email => {
-            // Update the email address in the HTML
-            document.getElementById('email-address').textContent = email;
-            // Now fetch the inbox for the new email
-            getInbox(email);
-        })
-        .catch(error => console.error('Error:', error));
-}
+    // Event listener to refresh inbox for the current email
+    refreshInboxButton.addEventListener('click', function() {
+        const currentEmail = emailAddressDisplay.textContent;
+        if (currentEmail.includes('@')) {
+            getInbox(currentEmail);
+        }
+    });
 
-// Function to get inbox messages for the generated email
-function getInbox(email) {
-    fetch(`http://localhost:3000/messagebox/${email}`)
-        .then(response => response.json())
-        .then(messages => {
-            const messagesList = document.getElementById('messages-list');
-            // Clear the messages list
-            messagesList.innerHTML = '';
-            // Iterate over each message and append it to the list
-            messages.forEach(message => {
-                const messageElement = document.createElement('div');
-                messageElement.textContent = `From: ${message.from} - Subject: ${message.subject}`;
-                messagesList.appendChild(messageElement);
-            });
-        })
-        .catch(error => console.error('Error:', error));
-}
+    function generateEmail() {
+        fetch('http://localhost:3000/')
+            .then(response => response.json())
+            .then(email => {
+                emailAddressDisplay.textContent = email; // Display the email
+                getInbox(email); // Fetch the inbox for the new email
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function getInbox(email) {
+        fetch(`http://localhost:3000/messagebox/${email}`)
+            .then(response => response.json())
+            .then(messages => {
+                messagesList.innerHTML = ''; // Clear previous messages
+                if (messages.length === 0) {
+                    messagesList.innerHTML = '<p>Your inbox is empty.</p>';
+                } else {
+                    messages.forEach(message => {
+                        const messageDiv = document.createElement('div');
+                        messageDiv.className = 'message';
+                        messageDiv.innerHTML = `
+                            <h3>${message.subject}</h3>
+                            <p>From: ${message.from}</p>
+                            <p>Date: ${new Date(message.date).toLocaleString()}</p>
+                            <p>${message.body}</p>
+                        `;
+                        messagesList.appendChild(messageDiv);
+                    });
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    });
