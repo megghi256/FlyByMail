@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function generateEmail() {
-    fetch('http://localhost:3000/')
+    fetch('http://localhost:5500/')
         .then(response => response.json())
         .then(email => {
             document.getElementById('email-address').textContent = email;
@@ -29,7 +29,7 @@ function generateEmail() {
 }
 
 function getInbox(email) {
-    fetch(`http://localhost:3000/messagebox/${email}`)
+    fetch(`http://localhost:5500/messagebox/${email}`)
         .then(response => response.json())
         .then(messages => {
             messagesList.innerHTML = ''; // Clear the current messages
