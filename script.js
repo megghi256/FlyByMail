@@ -1,18 +1,28 @@
-const express = require('express');
-const app = express();
-const port = 5500; // Specify the port here
+document.addEventListener('DOMContentLoaded', function () {
+    const generateEmailButton = document.getElementById('generate-email');
+    const refreshInboxButton = document.getElementById('refresh-inbox');
+    const emailDisplay = document.getElementById('email-address');
+    const messagesList = document.getElementById('messages-list');
 
-app.get('/generate-email', (req, res) => {
-    // Your route logic here
+    generateEmailButton.addEventListener('click', generateEmail);
+    refreshInboxButton.addEventListener('click', function() {
+        const currentEmail = emailDisplay.textContent;
+        if (currentEmail && currentEmail !== 'No email generated yet.') {
+            getInbox(currentEmail);
+        } else {
+            alert("Please generate an email address first.");
+        }
+    });
 });
 
-app.listen(port, () => console.log(`Server running on port ${port}`));
-
 function generateEmail() {
-    fetch('http://localhost:3000/generate-email')
+    // Notice the endpoint now points to your own server
+    fetch('/generate-email')
         .then(response => response.json())
         .then(data => {
-            document.getElementById('email-address').textContent = data.email;
+            const email = data.email;
+            document.getElementById('email-address').textContent = email;
+            // Optionally, you could automatically refresh the inbox here
         })
         .catch(error => {
             console.error('Error:', error);
@@ -21,15 +31,26 @@ function generateEmail() {
 }
 
 function getInbox(email) {
-    fetch(`http://localhost:3000/proxy-messagebox/${email}`)
+    // Notice the endpoint now points to your own server
+    fetch(`/proxy-messagebox/${email}`)
         .then(response => response.json())
         .then(data => {
-            // Update your DOM based on the response
+            messagesList.innerHTML = ''; // Clear the current messages
+            if (data.messages && data.messages.length > 0) {
+                data.messages.forEach(message => {
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = 'message';
+                    messageDiv.innerHTML = `<strong>From:</strong> ${message.from}<br>
+                                            <strong>Subject:</strong> ${message.subject}<br>
+                                            <p>${message.body}</p>`;
+                    messagesList.appendChild(messageDiv);
+                });
+            } else {
+                messagesList.innerHTML = '<p>No new messages.</p>';
+            }
         })
         .catch(error => {
             console.error('Error:', error);
             alert('Failed to refresh inbox. Please try again.');
         });
 }
-const cors = require('cors');
-app.use(cors());
