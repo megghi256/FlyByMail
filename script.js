@@ -4,11 +4,22 @@ document.addEventListener('DOMContentLoaded', function () {
     const emailDisplay = document.getElementById('email-address');
     const messagesList = document.getElementById('messages-list');
 
-    generateEmailButton.addEventListener('click', generateEmail);
+    generateEmailButton.addEventListener('click', function() {
+        fetch('https://tempmailapi--vikashkhati.repl.co/')
+            .then(response => response.json())
+            .then(data => {
+                const email = data.email; // Using the 'email' property from the response
+                emailDisplay.textContent = email;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to generate a new email. Please try again.');
+            });
+    });
+
     refreshInboxButton.addEventListener('click', function() {
         const currentEmail = emailDisplay.textContent;
-        // Make sure the placeholder text isn't treated as an email
-        if (currentEmail && currentEmail !== 'No email generated yet.') {
+        if (currentEmail.includes('@')) {
             getInbox(currentEmail);
         } else {
             alert("Please generate an email address first.");
@@ -16,32 +27,18 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-function generateEmail() {
-    fetch('http://localhost:5500/')
-        .then(response => response.json())
-        .then(email => {
-            document.getElementById('email-address').textContent = email;
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Failed to generate a new email. Please try again.');
-        });
-}
-
 function getInbox(email) {
-    fetch(`http://localhost:5500/messagebox/${email}`)
+    fetch(`https://tempmailapi--vikashkhati.repl.co/messagebox/${email}`)
         .then(response => response.json())
-        .then(messages => {
+        .then(data => {
             messagesList.innerHTML = ''; // Clear the current messages
-            if (messages.length > 0) {
-                messages.forEach(message => {
+            if (data.messages && data.messages.length > 0) {
+                data.messages.forEach(message => {
                     const messageDiv = document.createElement('div');
                     messageDiv.className = 'message';
-                    messageDiv.innerHTML = `
-                        <strong>From:</strong> ${message.from}<br>
-                        <strong>Subject:</strong> ${message.subject}<br>
-                        <p>${message.body}</p>
-                    `;
+                    messageDiv.innerHTML = `<strong>From:</strong> ${message.from}<br>
+                                            <strong>Subject:</strong> ${message.subject}<br>
+                                            <p>${message.body}</p>`;
                     messagesList.appendChild(messageDiv);
                 });
             } else {
