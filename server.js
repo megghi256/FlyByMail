@@ -1,9 +1,7 @@
 const express = require('express');
 const axios = require("axios");
-const cors = require('cors'); // Make sure to install the cors package
 
 const app = express();
-app.use(cors()); // Use CORS to avoid cross-origin issues
 
 async function getEmailValue() {
   try {
@@ -14,19 +12,22 @@ async function getEmailValue() {
   }
 }
 
+// Route handler for root endpoint ("/")
 app.get("/", async (req, res) => {
   try {
     const email = await getEmailValue();
-    res.json({ email: email }); // Ensure to send a JSON object
+    res.json(email);
   } catch (error) {
     console.error('Error fetching email value:', error);
     res.status(500).send('An error occurred');
   }
 });
 
+// Route handler for messagebox endpoint ("/messagebox/:email")
 app.get('/messagebox/:email', async (req, res) => {
   const { email } = req.params;
   const [localPart, domainPart] = email.split('@');
+
   try {
     const response = await axios.get(`https://www.1secmail.com/api/v1/?action=getMessages&login=${localPart}&domain=${domainPart}`);
     res.json(response.data);
