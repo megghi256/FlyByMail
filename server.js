@@ -1,35 +1,39 @@
 const express = require('express');
-const axios = require("axios");
+const axios = require('axios');
+const cors = require('cors');
 
 const app = express();
+app.use(cors());
+
+const PORT = 3000; // Use the same port number in the frontend fetch requests
 
 async function getEmailValue() {
   try {
-    const response = await axios.get("https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=1");
-    return response.data[0];
+    const response = await axios.get("https://tempmailapi--vikashkhati.repl.co/");
+    return response.data[0]; // Assuming the API returns an array with one email
   } catch (error) {
+    console.error('Error fetching random email:', error);
     throw error;
   }
 }
 
-// Route handler for root endpoint ("/")
-app.get("/", async (req, res) => {
+app.get("/generate-email", async (req, res) => {
   try {
     const email = await getEmailValue();
-    res.json(email);
+    res.json({ email: email }); // Make sure to return a JSON object
   } catch (error) {
-    console.error('Error fetching email value:', error);
+    console.error('Error on generating email:', error);
     res.status(500).send('An error occurred');
   }
 });
 
-// Route handler for messagebox endpoint ("/messagebox/:email")
 app.get('/messagebox/:email', async (req, res) => {
   const { email } = req.params;
   const [localPart, domainPart] = email.split('@');
 
   try {
-    const response = await axios.get(`https://www.1secmail.com/api/v1/?action=getMessages&login=${localPart}&domain=${domainPart}`);
+    const response = await axios.get(`https://tempmailapi--vikashkhati.repl.co/messagebox/${email}`);
+    console.log(response.data); // Log the response here
     res.json(response.data);
   } catch (error) {
     console.error('Error fetching messages:', error);
@@ -37,4 +41,4 @@ app.get('/messagebox/:email', async (req, res) => {
   }
 });
 
-app.listen(3000, () => console.log('Listening on PORT: 3000'));
+app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

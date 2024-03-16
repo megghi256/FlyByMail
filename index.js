@@ -1,40 +1,54 @@
-const express = require('express');
-const axios = require("axios");
+let currentEmail = ''; // Global variable to store the current email
 
-const app = express();
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('generateEmail').addEventListener('click', generateEmail);
+  document.getElementById('refreshInbox').addEventListener('click', function() {
+    if (currentEmail) {
+      getInboxMessages(currentEmail);
+    } else {
+      console.log('No email address to refresh.');
+    }
+  });
+});
 
-async function getEmailValue() {
+async function generateEmail() {
   try {
-    const response = await axios.get("https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=1");
-    return response.data[0];
+    const response = await fetch('http://localhost:3000/');
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const data = await response.json();
+    currentEmail = data.email;
+    document.getElementById('emailDisplay').textContent = currentEmail;
+    getInboxMessages(currentEmail);
   } catch (error) {
-    throw error;
+    console.error('Error:', error);
   }
 }
 
-// Route handler for root endpoint ("/")
-app.get("/", async (req, res) => {
+async function getInboxMessages(email) {
   try {
-    const email = await getEmailValue();
-    res.json(email);
+    const response = await fetch(`http://localhost:3000/messagebox/${encodeURIComponent(email)}`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const messages = await response.json();
+    displayMessages(messages);
   } catch (error) {
-    console.error('Error fetching email value:', error);
-    res.status(500).send('An error occurred');
+    console.error('Error:', error);
   }
-});
+}
 
-// Route handler for messagebox endpoint ("/messagebox/:email")
-app.get('/messagebox/:email', async (req, res) => {
-  const { email } = req.params;
-  const [localPart, domainPart] = email.split('@');
-
-  try {
-    const response = await axios.get(`https://www.1secmail.com/api/v1/?action=getMessages&login=${localPart}&domain=${domainPart}`);
-    res.json(response.data);
-  } catch (error) {
-    console.error('Error fetching messages:', error);
-    res.status(500).send('An error occurred');
+function displayMessages(messages) {
+  const inbox = document.getElementById('inboxMessages');
+  inbox.innerHTML = ''; // Clear the inbox first
+  if (messages.length === 0) {
+    inbox.innerHTML = '<p>No messages in the inbox.</p>';
+  } else {
+    messages.forEach(message => {
+      const messageDiv = document.createElement('div');
+      messageDiv.textContent = `From: ${message.from}, Subject: ${message.subject}`;
+      inbox.appendChild(messageDiv);
+    });
   }
-});
-
-app.listen(5500, () => console.log('Listening on PORT: 3000'));
+}

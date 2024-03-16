@@ -1,28 +1,48 @@
+/* styles.css */
+/* ... other styles ... */
+
 body {
-    font-family: Arial, sans-serif;
-  }
-  
-  #emailContainer,
-  #inboxContainer {
-    margin-bottom: 20px;
-  }
-  
-  #emailDisplay {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    background-color: #f9f9f9;
-  }
-  
-  button {
-    padding: 10px 20px;
-    cursor: pointer;
-  }
-  
-  #inboxMessages div {
-    padding: 5px;
-    margin-top: 10px;
-    border-bottom: 1px solid #eee;
-  }
-  
+  /* ... other styles ... */
+  background: url('images/16.jpg') no-repeat center center fixed;
+  background-size: cover;
+}
+
+#email-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#email-display {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+#generate-email, #copy-email, #refresh-inbox {
+  padding: 10px 20px;
+  background-color: #f9643217;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 150px; /* Match the width of the buttons */
+}
+
+#refresh-inbox {
+  align-self: center;
+  margin-top: 20px;
+}
+
+#email-address-dropdown {
+  /* ... other styles ... */
+  flex-grow: 1; /* Make the dropdown grow to fill the space */
+  margin: 0 10px; /* Spacing on both sides */
+}
+
+.message.empty {
+  text-align: center;
+  color: #aaa;
+}
+
+/* ... other styles ... */

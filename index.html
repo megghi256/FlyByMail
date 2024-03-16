@@ -3,29 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Temporary Email Service</title>
+  <title>Temporary Email Generator</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <header>
+    <h1>Temporary Email Generator</h1>
+    <p>Welcome to the Temporary Email Generator. This web application allows you to create a temporary email address to protect your privacy. Use it to sign up for services without giving away your personal email. Your inbox is displayed right here and you can easily refresh to see new messages. Say goodbye to spam emails with your own temporary email solution.</p>
+  </header>
 
-  <!-- Container for the temporary email address -->
-  <div id="emailContainer">
-    <h1>Temporary Email Address</h1>
-    <div id="emailDisplay">[Random Email Here]</div>
-    <button id="generateEmail">Generate Email</button>
-  </div>
+  <main>
+    <section id="email-section">
+      <label for="email-address-dropdown">Your Temporary Email Address:</label>
+      <div id="email-display">
+        <button id="generate-email">Generate Email</button>
+        <select id="email-address-dropdown"></select>
+        <button id="copy-email">Copy</button>
+      </div>
+    </section>
 
-  <!-- Container for inbox messages -->
-  <div id="inboxContainer">
-    <h2>Inbox</h2>
-    <!-- Add the Refresh Inbox Button -->
-  <button id="refreshInbox">Refresh Inbox</button>
-  <div id="inboxMessages">
-    <!-- Inbox messages will be dynamically appended here -->
-    <div id="inboxMessages">
-      <!-- Inbox messages will be dynamically appended here -->
-    </div>
-  </div>
+    <section id="inbox">
+      <button id="refresh-inbox">Refresh Inbox</button>
+      <div id="messages-list">
+        <div class="message empty">Your received messages will be displayed here.</div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2024 Temporary Email Generator</p>
+  </footer>
 
   <script src="script.js"></script>
 </body>
