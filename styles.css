@@ -1,0 +1,175 @@
+body {
+  font-family: 'Arial', sans-serif;
+  background-image: url('/images/08.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  margin: 0;
+  padding: 20px;
+  color: #ffffff;
+}
+
+header {
+  text-align: center;
+  padding: 20px 0;
+  margin-left: 450px; /* Adjust as needed */
+  margin-right: 450px; /* Adjust as needed */
+  
+
+}
+
+#logo {
+  display: block;
+  margin: 0 auto;
+  max-width: 150px;
+}
+
+#email-section {
+  background-color: #8623ff7b;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto; /* Reduced padding for a smaller overall height */
+  border-radius: 70px; /* Adjusted border radius for desired shape */
+}
+
+#email-generator-box {
+  margin-bottom: 10 px;
+  margin-top: 10 px;
+}
+
+#email-display {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  margin-top: 10 px;
+}
+
+#email-address-dropdown, 
+button {
+  padding: 10px;
+  margin: 5px;
+  border-radius: 50px;
+  border: 1px solid #000000;
+  background-color: #ffffffd1;
+  cursor: pointer;
+}
+
+#email-address-dropdown {
+  flex-grow: 1;
+  margin-right: 10px; /* Space between input and button */
+}
+
+button {
+  background-color: #000000;
+  color: #fff;
+  border: none;
+}
+
+button:hover {
+  background-color: #04a6b1;
+}
+
+#copy-email, 
+#generate-email {
+  padding: 10px 15px;
+}
+
+
+
+#inbox {
+  position: relative;
+  max-width: 600px;
+  margin: 20px auto;
+}
+
+
+#inbox h2 {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 2em;
+}
+.message {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-top: 10px;
+  font-size: 0.7em;
+}
+
+.message-header {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.7em;
+}
+
+.message-body {
+  display: none;
+  padding-top: 10px;
+  font-size: 0.7em;
+}
+
+
+
+
+
+#inbox #refresh-inbox {
+  display: block;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #8623ff7b;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  line-height: 40px;
+  text-align: center;
+}
+
+#inbox #refresh-inbox svg {
+  width: 20px;
+  height: 20px;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+#email-address-label {
+  font-size: 1.1em;
+  margin-bottom: 5px;
+  color: #000000;
+}
+
+.empty-box,
+.message {
+  background-color: #6a1bca7b;
+  border-radius: 20px;
+  box-shadow: 0 2px 4px rgba(222, 33, 33, 0.05);
+  padding: 20px;
+  text-align: center;
+  margin: 0 auto;
+  font-size: 1.2em;
+  color: #ffffff;
+}
+
+.following-text {
+  max-width: 600px;
+  margin: 40px auto;
+  text-align: center;
+  
+}
+
+footer {
+  padding: 10px 0;
+  text-align: center;
+  color: #fff;
+}
+
