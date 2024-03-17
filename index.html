@@ -3,35 +3,41 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Temporary Email Generator</title>
+  <title>FlyByMail Temporary Email Generator</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header>
-    <h1>Temporary Email Generator</h1>
-    <p>Welcome to the Temporary Email Generator. This web application allows you to create a temporary email address to protect your privacy. Use it to sign up for services without giving away your personal email. Your inbox is displayed right here and you can easily refresh to see new messages. Say goodbye to spam emails with your own temporary email solution.</p>
+    <img src="/images/logo.png" alt="FlyByMail Logo" id="logo">
+    <p>Forget about spam, advertising mailings, hacking and attacking robots. Keep your real mailbox clean and secure. FlyByMail provides temporary, secure, anonymous, free, disposable email address.</p>
   </header>
 
   <main>
     <section id="email-section">
-      <label for="email-address-dropdown">Your Temporary Email Address:</label>
-      <div id="email-display">
-        <button id="generate-email">Generate Email</button>
-        <select id="email-address-dropdown"></select>
-        <button id="copy-email">Copy</button>
+      <div id="email-generator-box">
+        <label for="email-address-dropdown" id="email-label">Your Email Address:</label>
+        <div id="email-display">
+          <select id="email-address-dropdown"></select>
+          <div id="button-container">
+            <button id="copy-email">Copy</button>
+            <button id="generate-email">Generate Email</button>
+            <button id="refresh-inbox">Refresh</button>
+          </div>
+        </div>
       </div>
     </section>
+    <p class="following-text">Generate more than one e-mail address at the same time and check the respective inbox by selecting it from the dropdown menu</p>
 
     <section id="inbox">
-      <button id="refresh-inbox">Refresh Inbox</button>
-      <div id="messages-list">
-        <div class="message empty">Your received messages will be displayed here.</div>
-      </div>
+      <h2>Inbox</h2>
+      
+      <div id="messages-list" class="empty-box">
+        Your messages will be displayed here.
     </section>
   </main>
 
   <footer>
-    <p>&copy; 2024 Temporary Email Generator</p>
+    <p>&copy; 2024 FlyByMail Temporary Email Generator</p>
   </footer>
 
   <script src="script.js"></script>
